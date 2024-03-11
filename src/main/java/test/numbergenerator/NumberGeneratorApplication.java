@@ -7,7 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class NumberGeneratorApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(NumberGeneratorApplication.class, args);
+        SpringApplication.run(new Class<?>[]{
+                NumberGeneratorApplication.class,
+                DataSourceConfig.class
+        }, args);
     }
 
 }

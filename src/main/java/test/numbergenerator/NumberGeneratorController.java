@@ -1,9 +1,9 @@
 package test.numbergenerator;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import test.numbergenerator.entity.CarNumberRepository;
 
 @RestController
 public class NumberGeneratorController {
@@ -13,11 +13,23 @@ public class NumberGeneratorController {
         this.carNumberRepository = carNumberRepository;
     }
     @GetMapping(value= "/random", produces="text/plain")
+    @Transactional
     public ResponseEntity<?> random(){
-        return ResponseEntity.ok(carNumberRepository.getRandom().toString());
+        var carNumber = carNumberRepository.getRandom();
+        if (carNumber == null){
+            return ResponseEntity.notFound().build();
+        }else{
+            return ResponseEntity.ok(carNumber.toString());
+        }
     }
     @GetMapping(value= "/next", produces="text/plain")
+    @Transactional
     public ResponseEntity<?> next(){
-        return ResponseEntity.ok(carNumberRepository.getNext().toString());
+        var carNumber = carNumberRepository.getNext();
+        if (carNumber == null){
+            return ResponseEntity.notFound().build();
+        }else {
+            return ResponseEntity.ok(carNumber.toString());
+        }
     }
 }
